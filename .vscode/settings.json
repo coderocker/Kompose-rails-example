@@ -1,0 +1,17 @@
+{
+    "npm.enableScriptExplorer": true,
+    "ruby.rubocop.configFilePath": "${workspaceRoot}/.rubocop.yml",
+    "docker-linter.debug": true,
+    "editor.tabSize": 2,
+    "editor.wordWrap": "on",
+    "editor.formatOnType": true,
+    "files.autoSave": "afterDelay",
+    "ruby.intellisense": "rubyLocate",
+    "ruby.codeCompletion": "rcodetools",
+    "files.insertFinalNewline": true,
+    "ruby.interpreter.commandPath": "${workspaceRoot}/gem_path/ruby/2.6.2/bin/ruby",
+    "solargraph.autoformat": true,
+    "solargraph.commandPath": "${workspaceRoot}/gem_path/ruby/2.6.2/bin/solargraph",
+    "ruby.rubocop.executePath": "${workspaceRoot}/gem_path/ruby/2.6.2/bin/rubocop",
+    "editor.fontLigatures": true
+}

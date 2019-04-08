@@ -1,0 +1,45 @@
+version: '3'
+services:
+  todo-db:
+    image: kingk0der/testdbpostgres:9.6.2
+    build:
+      context: ./todo-devdocker/instances/db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=myOrg1234#
+      - POSTGRES_DB=todo
+      - PGPASSWORD=myOrg1234#
+      - GET_HOSTS_FROM=dns
+    volumes:
+      - "todo-db-data:/var/lib/postgresql/data"
+    labels:
+      kompose.service.type: LoadBalancer      
+    ports:
+      - "5432:5432"
+    networks:
+      - todo
+
+  todo-web:
+    image: kingk0der/todoapp:1.1
+    build: 
+      context: ./
+    tty: true
+    stdin_open: true
+    environment:
+      - GET_HOSTS_FROM=dns
+    labels:
+      kompose.service.type: LoadBalancer
+    ports:
+      - "3000:${PORT:-3000}"
+    depends_on:
+      - todo-db
+    networks:
+      - todo
+
+
+volumes:
+  todo-db-data:
+
+networks:
+  todo:
+    driver: bridge

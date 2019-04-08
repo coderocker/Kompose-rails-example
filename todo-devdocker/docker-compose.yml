@@ -1,0 +1,49 @@
+version: '3'
+services:
+  todo.db:
+    image: postgres:9.6.2
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: myOrg1234#
+      POSTGRES_DB: todo
+      PGPASSWORD: myOrg1234#
+    volumes:
+      - "todo-db-data:/var/lib/postgresql/data"
+    ports:
+      - "5433:5432"
+    networks:
+      - todo
+
+  todo.web:
+    build: ./instances/web
+    tty: true
+    stdin_open: true
+    command: /home/todo/approot/todo-devdocker/web/post-install.sh
+    environment:
+      - SSH_AUTH_SOCK=/home/todo/ssh-agent
+      - BUNDLE_PATH=/home/todo/approot/gem_path/ruby/2.6.2/
+      - GEM_PATH=/home/todo/approot/gem_path/ruby/2.6.2/
+      - RUBYGEMS_DIR=/home/todo/approot/gem_path/ruby/2.6.2/
+      - EXECUTABLE_DIRECTORY=/home/todo/approot/gem_path/ruby/2.6.2/bin
+    volumes:
+      - ../:/home/todo/approot
+      - ~/.ssh/id_rsa:/home/todo/.ssh/id_rsa
+      - ~/.ssh/known_hosts:/home/todo/.ssh/known_hosts
+      - "${SSH_AUTH_SOCK}:/home/todo/ssh-agent"
+    ports:
+      - "3001:3001"
+      - "1234:1234"
+      - "26162:26162"
+    depends_on:
+      - todo.db
+    networks:
+      - todo
+
+
+volumes:
+  todo-db-data:
+
+networks:
+  todo:
+    driver: bridge
+
